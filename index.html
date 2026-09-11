@@ -1,4 +1,83 @@
-FROM nginx:alpine
-COPY index.html /usr/share/nginx/html/index.html
-EXPOSE 8080
-CMD ["sh", "-c", "sed -i 's/listen       80;/listen       8080;/' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CONVOY TECHNOLOGY — Coming Soon</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; overflow:hidden;
+  font-family:Arial,Helvetica,sans-serif; color:#fff;
+  background:radial-gradient(circle at 70% 45%,#173b65 0,#0b213c 28%,#061426 58%,#040c17 100%);
+}
+main{
+  min-height:100vh; width:min(1200px,92vw); margin:auto;
+  display:grid; grid-template-columns:1.05fr .95fr; align-items:center; gap:30px;
+}
+.kicker{letter-spacing:.25em;font-size:12px;color:#9db9d8;margin-bottom:18px}
+.wordmark{
+  position:fixed;top:30px;left:4vw;z-index:5;
+  display:flex;align-items:baseline;gap:14px;
+  letter-spacing:.13em;
+}
+.wordmark span{font-size:20px;font-weight:600;color:#fff}
+.wordmark small{font-size:9px;font-weight:500;letter-spacing:.28em;color:#8fa8c2}
+
+h1{font-size:clamp(48px,7vw,92px);line-height:.95;letter-spacing:-.045em;margin:0 0 24px}
+p{font-size:17px;line-height:1.7;color:#a9bdd3;max-width:610px;margin:0 0 28px}
+.coming{font-size:13px;letter-spacing:.28em;text-transform:uppercase;margin:30px 0 14px}
+.email{color:#fff;text-decoration:none;font-size:18px;border-bottom:1px solid rgba(255,255,255,.35);padding-bottom:5px}
+.globe-wrap{position:relative;display:grid;place-items:center;min-height:520px}
+.orbit{position:absolute;width:115%;height:43%;border:1px solid rgba(185,218,255,.25);border-radius:50%;transform:rotate(-17deg)}
+.globe{
+  width:min(430px,78vw);aspect-ratio:1;border-radius:50%;position:relative;overflow:hidden;
+  border:1px solid rgba(190,220,255,.35);
+  background:
+    radial-gradient(circle at 31% 27%,rgba(255,255,255,.28),transparent 15%),
+    radial-gradient(circle at 61% 55%,rgba(80,155,240,.36),transparent 34%),
+    linear-gradient(145deg,#12365f,#07192d 62%,#102b49);
+  box-shadow:0 0 110px rgba(114,177,245,.25),inset -38px -22px 85px rgba(0,0,0,.48);
+}
+.globe:before{
+  content:"";position:absolute;inset:-12%;border-radius:50%;
+  background:
+    repeating-linear-gradient(0deg,transparent 0 25px,rgba(195,224,255,.13) 26px 27px),
+    repeating-linear-gradient(90deg,transparent 0 31px,rgba(195,224,255,.10) 32px 33px);
+  animation:spin 15s linear infinite;
+}
+.globe:after{
+  content:"";position:absolute;inset:12%;border:1px solid rgba(255,255,255,.17);border-radius:50%;
+  box-shadow:0 0 0 34px rgba(255,255,255,.025),0 0 0 75px rgba(255,255,255,.017);
+}
+@keyframes spin{from{transform:rotate(-12deg)}to{transform:rotate(348deg)}}
+@media(max-width:800px){
+  body{overflow:auto} main{grid-template-columns:1fr;padding:70px 0;text-align:center}
+  p{margin-left:auto;margin-right:auto}.globe-wrap{min-height:400px}
+}
+</style>
+</head>
+<body>
+<main>
+  <section>
+    <div class="wordmark"><span>CONVOY TECHNOLOGY LTD</span><small>LONDON</small></div>
+    <p>Secure digital infrastructure for product identity, ownership verification and traceability.</p>
+    <div class="coming">Coming Soon</div>
+  </section>
+  <section class="globe-wrap" aria-label="Animated digital globe">
+    <div class="orbit"></div>
+    <div class="globe"></div>
+  </section>
+</main>
+<div class="address">
+<a class="footer-email" href="mailto:info@convoyct.com">info@convoyct.com</a><br>
+11 Old Bond Street<br>
+Mayfair, London W1S 4PN<br>
+United Kingdom
+</div>
+<style>
+.address{position:fixed;right:32px;bottom:24px;text-align:right;color:#8fa8c2;font-size:12px;line-height:1.6;letter-spacing:.04em}.footer-email{display:inline-block;color:#fff;text-decoration:none;font-size:14px;margin-bottom:6px;border-bottom:1px solid rgba(255,255,255,.28);padding-bottom:3px}
+@media(max-width:800px){.address{position:static;text-align:center;padding:0 20px 28px}}
+</style>
+</body>
+</html>
