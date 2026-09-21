@@ -1,378 +1,305 @@
+import os
+from flask import Flask, render_template_string
+
+app = Flask(__name__)
+
+HTML = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convoy Passport | Product Identity</title>
 
-<title>CONVOY | Handmade Carpets</title>
+    <style>
+        * { box-sizing: border-box; }
 
-<style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            color: white;
+            background:
+                radial-gradient(circle at 78% 42%, #123f88 0%, #071d48 32%, #030b1d 70%);
+        }
 
-body {
-  background:
-    radial-gradient(circle at 75% 15%, #123f82 0%, #071d43 38%, #030b19 100%);
-  color: #fff;
-  font-family: Arial, Helvetica, sans-serif;
-}
+        header {
+            padding: 32px 38px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
 
-.container {
-  width: min(1380px, 92%);
-  margin: auto;
-}
+        header span {
+            font-size: 11px;
+            margin-left: 12px;
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
 
-/* HEADER */
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 8%;
+        }
 
-header {
-  padding: 45px 0 25px;
-  border-bottom: 1px solid rgba(255,255,255,.18);
-}
+        .content { width: 46%; }
 
-.brand {
-  font-size: 15px;
-  letter-spacing: 7px;
-  font-weight: 700;
-}
+        .coming {
+            font-size: 15px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
 
-.brand span {
-  opacity: .55;
-}
+        .description {
+            max-width: 520px;
+            line-height: 1.7;
+            color: #d8e5ff;
+            font-size: 15px;
+        }
 
-/* HERO */
+        .buttons { margin-top: 28px; }
 
-.hero {
-  padding: 90px 0 75px;
-}
+        .button {
+            display: inline-block;
+            padding: 14px 25px;
+            margin-right: 12px;
+            border: 1px solid #8ca9dc;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
 
-.eyebrow {
-  font-size: 13px;
-  letter-spacing: 6px;
-  font-weight: bold;
-  margin-bottom: 22px;
-}
+        .globe {
+            width: 390px;
+            height: 390px;
+            border-radius: 50%;
+            border: 1px solid #79a8ff;
+            position: relative;
+            background:
+                radial-gradient(circle at 35% 30%, #2469cf, #06306f 48%, #021331 78%);
+            box-shadow: 0 0 90px rgba(30,112,255,0.35);
+        }
 
-h1 {
-  font-size: clamp(48px, 7vw, 105px);
-  line-height: .9;
-  font-weight: 300;
-  letter-spacing: -4px;
-  max-width: none;
-}
+        .globe::before {
+            content: "";
+            position: absolute;
+            width: 125%;
+            height: 42%;
+            border: 1px solid rgba(120,170,255,0.7);
+            border-radius: 50%;
+            left: -13%;
+            top: 29%;
+            transform: rotate(-12deg);
+        }
 
-.intro {
-  
-  max-width: 790px;
-  margin-top: 40px;
-  font-size: 19px;
-  line-height: 1.75;
-  color: rgba(255,255,255,.78);
-}
+        footer {
+            padding: 25px 38px;
+            text-align: right;
+            font-size: 12px;
+            line-height: 1.7;
+            color: #d9e5ff;
+        }
 
-/* COLLECTION */
+        @media (max-width: 800px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
 
-.collection {
-  padding: 40px 0 110px;
-}
+            .content {
+                width: 100%;
+                margin-bottom: 50px;
+            }
 
-.section-label {
-  letter-spacing: 5px;
-  font-size: 12px;
-  margin-bottom: 35px;
-  color: rgba(255,255,255,.7);
-}
+            .globe {
+                width: 280px;
+                height: 280px;
+            }
 
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 25px;
-}
-
-.rug-card {
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.20);
-  padding: 14px;
-  transition: .3s ease;
-}
-
-.rug-card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(255,255,255,.55);
-}
-
-.rug-card img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* BESPOKE */
-
-.bespoke {
-  border-top: 1px solid rgba(255,255,255,.18);
-  padding: 100px 0;
-}
-
-.bespoke-grid {
-  display: grid;
-  grid-template-columns: .8fr 1.2fr;
-  gap: 80px;
-}
-
-.bespoke h2 {
-  font-size: clamp(42px, 6vw, 82px);
-  font-weight: 300;
-  line-height: 1;
-}
-
-.copy p {
-  font-size: 18px;
-  line-height: 1.8;
-  margin-bottom: 25px;
-  color: rgba(255,255,255,.82);
-}
-
-.features {
-  margin-top: 45px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
-}
-
-.feature {
-  padding: 28px;
-  min-height: 145px;
-  border: 1px solid rgba(255,255,255,.2);
-}
-
-.number {
-  font-size: 11px;
-  opacity: .55;
-  letter-spacing: 3px;
-}
-
-.feature h3 {
-  margin: 17px 0 9px;
-  letter-spacing: 2px;
-  font-size: 15px;
-}
-
-.feature p {
-  font-size: 14px;
-  line-height: 1.55;
-  margin: 0;
-}
-
-/* TECHNOLOGY */
-
-.technology {
-  padding: 100px 0;
-  border-top: 1px solid rgba(255,255,255,.18);
-}
-
-.tech-label {
-  letter-spacing: 6px;
-  font-size: 12px;
-  margin-bottom: 25px;
-}
-
-.technology h2 {
-  font-size: clamp(45px, 7vw, 95px);
-  font-weight: 300;
-  max-width: 1050px;
-  line-height: 1;
-}
-
-.technology p {
-  max-width: 760px;
-  margin-top: 35px;
-  font-size: 19px;
-  line-height: 1.8;
-  color: rgba(255,255,255,.78);
-}
-
-.coming {
-  display: inline-block;
-  margin-top: 35px;
-  border: 1px solid rgba(255,255,255,.35);
-  padding: 16px 26px;
-  letter-spacing: 4px;
-  font-size: 11px;
-}
-
-/* FOOTER */
-
-footer {
-  border-top: 1px solid rgba(255,255,255,.18);
-  padding: 35px 0 50px;
-  font-size: 11px;
-  letter-spacing: 2px;
-  color: rgba(255,255,255,.58);
-}
-
-/* MOBILE */
-
-@media(max-width:850px) {
-  .gallery {
-    grid-template-columns: 1fr;
-  }
-
-  .bespoke-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
-  .features {
-    grid-template-columns: 1fr;
-  }
-
-  h1 {
-    letter-spacing: -2px;
-  }
-
-  .hero {
-    padding-top: 60px;
-  }
-}
-</style>
+            footer { text-align: center; }
+        }
+    </style>
 </head>
 
 <body>
 
 <header>
-  <div class="container">
-    <div class="brand">CONVOY <span>CARPETS</span></div>
-  </div>
+    CONVOY TECHNOLOGY LTD
+    <span>LONDON</span>
 </header>
 
 <section class="hero">
-  <div class="container">
-    <div class="eyebrow">HANDMADE · BESPOKE · INDIVIDUAL</div>
 
-    <h1>HANDMADE<br>CARPETS</h1>
+    <div class="content">
+        <div class="coming">COMING SOON</div>
 
-    <p class="intro">
-      Traditional craftsmanship, individually created for you.
-      Every CONVOY carpet can be commissioned in your preferred
-      dimensions, colours and materials — handcrafted as an individual piece.
-    </p>
-  </div>
-</section>
+        <div class="description">
+            Secure digital infrastructure for product identity,
+            ownership verification and traceability.
+        </div>
 
-<section class="collection">
-  <div class="container">
-
-    <div class="section-label">SELECTED DESIGNS · MADE TO ORDER</div>
-
-    <div class="gallery">
-
-      <div class="rug-card">
-        <img src="IMG_6388.jpeg" alt="CONVOY handmade rug">
-      </div>
-
-      <div class="rug-card">
-        <img src="IMG_6389.jpeg" alt="CONVOY handmade rug">
-      </div>
-
-      <div class="rug-card">
-        <img src="IMG_6390.jpeg" alt="CONVOY handmade rug">
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<section class="bespoke">
-  <div class="container bespoke-grid">
-
-    <div>
-      <div class="section-label">MADE FOR ONE OWNER</div>
-      <h2>YOUR CARPET.<br>YOUR STORY.</h2>
+        <div class="buttons">
+            <a class="button" href="/carpets">CARPETS</a>
+            <a class="button" href="/technology">TECHNOLOGY</a>
+        </div>
     </div>
 
-    <div class="copy">
+    <div class="globe"></div>
 
-      <p>
-        Every CONVOY carpet is made individually to order. You may select
-        the dimensions, colour palette, design and materials, including
-        natural wool, silk, cotton or selected combinations.
-      </p>
-
-      <p>
-        Each commissioned carpet can be accompanied by a personalised
-        certificate bearing the owner's name and signed by the artisan
-        responsible for weaving the piece.
-      </p>
-
-      <p>
-        For selected commissions, clients may also arrange to visit and
-        experience the craftsmanship behind their carpet while it is
-        being woven.
-      </p>
-
-      <div class="features">
-
-        <div class="feature">
-          <div class="number">01</div>
-          <h3>BESPOKE CREATION</h3>
-          <p>Made specifically for you in your selected size, colours, design and materials.</p>
-        </div>
-
-        <div class="feature">
-          <div class="number">02</div>
-          <h3>PERSONALISED CERTIFICATE</h3>
-          <p>A certificate documenting the carpet and its owner, signed by the artisan.</p>
-        </div>
-
-        <div class="feature">
-          <div class="number">03</div>
-          <h3>NUMBERED PIECE</h3>
-          <p>Each qualifying CONVOY carpet can carry its own individual identification number.</p>
-        </div>
-
-        <div class="feature">
-          <div class="number">04</div>
-          <h3>THE MAKING EXPERIENCE</h3>
-          <p>Selected clients may arrange to experience their carpet during the weaving process.</p>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="technology">
-  <div class="container">
-
-    <div class="tech-label">CONVOY TECHNOLOGY</div>
-
-    <h2>TRADITION ENTERS THE DIGITAL AGE.</h2>
-
-    <p>
-      CONVOY Technology is developing a new digital layer for the world
-      of handmade carpets. Our vision is to give each qualifying piece
-      a distinct digital identity designed to connect its craftsmanship,
-      specifications, provenance and history.
-    </p>
-
-    <p>
-      We are not simply bringing handmade carpets to a new generation.
-      We are bringing technology into the story of the carpet itself.
-    </p>
-
-    <div class="coming">COMING SOON</div>
-
-  </div>
 </section>
 
 <footer>
-  <div class="container">
-    CONVOY TECHNOLOGY LTD · LONDON · info@convoyct.com
-  </div>
+    info@convoyCT.com<br>
+    11 Old Bond Street<br>
+    Mayfair, London W1S 4PN<br>
+    United Kingdom
 </footer>
 
 </body>
 </html>
+"""
+
+CARPETS_HTML = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convoy Carpets | Product Identity</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #06132d;
+            color: white;
+        }
+
+        .page {
+            max-width: 900px;
+            margin: auto;
+            padding: 70px 30px;
+        }
+
+        .brand {
+            font-size: 14px;
+            letter-spacing: 2px;
+            margin-bottom: 70px;
+        }
+
+        .label {
+            color: #8fb6ff;
+            font-size: 13px;
+            letter-spacing: 2px;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin: 12px 0;
+        }
+
+        .passport {
+            margin-top: 45px;
+            border: 1px solid #31558c;
+            border-radius: 15px;
+            padding: 35px;
+            background: #091b3d;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 16px;
+            border: 1px solid #65a1ff;
+            border-radius: 20px;
+            color: #a9caff;
+            font-weight: bold;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 45px;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="brand">
+        CONVOY TECHNOLOGY LTD · LONDON
+    </div>
+
+    <div class="label">
+        CONVOY PRODUCT IDENTITY
+    </div>
+
+    <h1>Carpet Passport</h1>
+
+    <p>
+        Digital identity and provenance record for handcrafted carpets.
+    </p>
+
+    <div class="passport">
+
+        <div class="label">PRODUCT STATUS</div>
+
+        <h2>Handcrafted Carpet</h2>
+
+        <p>
+            Product identity, materials, craftsmanship,
+            ownership and provenance information will be
+            recorded within the Convoy Passport system.
+        </p>
+
+        <div class="status">PROTOTYPE</div>
+
+    </div>
+
+    <a class="back" href="/">← Back to Convoy</a>
+
+</div>
+
+</body>
+</html>
+"""
+
+
+@app.route("/")
+def home():
+    return render_template_string(HTML)
+
+
+@app.route("/carpets")
+def carpets():
+    return render_template_string(CARPETS_HTML)
+
+
+@app.route("/technology")
+def technology():
+    return """
+    <body style="margin:0;background:#06132d;color:white;
+    font-family:Arial;text-align:center;padding-top:150px;">
+        <h1>CONVOY TECHNOLOGY</h1>
+        <p>Coming Soon</p>
+        <a href="/" style="color:white;">Back to Convoy</a>
+    </body>
+    """
+
+
+@app.route("/health")
+def health():
+    return {"status": "ok"}
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
