@@ -3,13 +3,13 @@ from flask import Flask, render_template_string
 
 app = Flask(__name__)
 
-HTML = """
+HOME_HTML = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convoy Passport | Product Identity</title>
+    <title>Convoy Passport</title>
 
     <style>
         * { box-sizing: border-box; }
@@ -44,7 +44,9 @@ HTML = """
             padding: 30px 8%;
         }
 
-        .content { width: 46%; }
+        .content {
+            width: 46%;
+        }
 
         .coming {
             font-size: 15px;
@@ -60,7 +62,9 @@ HTML = """
             font-size: 15px;
         }
 
-        .buttons { margin-top: 28px; }
+        .buttons {
+            margin-top: 28px;
+        }
 
         .button {
             display: inline-block;
@@ -71,6 +75,10 @@ HTML = """
             text-decoration: none;
             font-weight: bold;
             letter-spacing: 1px;
+        }
+
+        .button:hover {
+            background: rgba(255,255,255,0.10);
         }
 
         .globe {
@@ -120,7 +128,9 @@ HTML = """
                 height: 280px;
             }
 
-            footer { text-align: center; }
+            footer {
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -135,7 +145,10 @@ HTML = """
 <section class="hero">
 
     <div class="content">
-        <div class="coming">COMING SOON</div>
+
+        <div class="coming">
+            CONVOY PASSPORT · EXPERIMENTAL BETA
+        </div>
 
         <div class="description">
             Secure digital infrastructure for product identity,
@@ -146,6 +159,7 @@ HTML = """
             <a class="button" href="/carpets">CARPETS</a>
             <a class="button" href="/technology">TECHNOLOGY</a>
         </div>
+
     </div>
 
     <div class="globe"></div>
@@ -163,69 +177,126 @@ HTML = """
 </html>
 """
 
-CARPETS_HTML = """
+CARPET_HTML = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convoy Carpets | Product Identity</title>
+
+    <title>Convoy Passport | Carpet CP-000001</title>
 
     <style>
+        * { box-sizing: border-box; }
+
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
-            background: #06132d;
+            background:
+                radial-gradient(circle at 80% 20%, #123f88, #071d48 40%, #030b1d 85%);
             color: white;
+            min-height: 100vh;
         }
 
         .page {
-            max-width: 900px;
+            width: 90%;
+            max-width: 950px;
             margin: auto;
-            padding: 70px 30px;
+            padding: 60px 0;
         }
 
         .brand {
-            font-size: 14px;
             letter-spacing: 2px;
+            font-weight: bold;
             margin-bottom: 70px;
         }
 
-        .label {
-            color: #8fb6ff;
-            font-size: 13px;
-            letter-spacing: 2px;
+        .beta {
+            color: #91baff;
+            font-size: 12px;
+            letter-spacing: 3px;
         }
 
         h1 {
-            font-size: 48px;
-            margin: 12px 0;
+            font-size: 52px;
+            margin: 12px 0 10px;
+        }
+
+        .subtitle {
+            color: #c6d7f5;
+            line-height: 1.7;
         }
 
         .passport {
             margin-top: 45px;
-            border: 1px solid #31558c;
-            border-radius: 15px;
             padding: 35px;
-            background: #091b3d;
+            border: 1px solid rgba(130,170,240,0.45);
+            border-radius: 14px;
+            background: rgba(8,25,58,0.82);
         }
 
         .status {
             display: inline-block;
-            margin-top: 20px;
-            padding: 10px 16px;
-            border: 1px solid #65a1ff;
+            padding: 9px 15px;
+            border: 1px solid #77aaff;
             border-radius: 20px;
-            color: #a9caff;
-            font-weight: bold;
+            color: #b7d0ff;
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 28px;
+        }
+
+        .id {
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .field {
+            border-top: 1px solid rgba(255,255,255,0.15);
+            padding-top: 14px;
+        }
+
+        .label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: #83a8e8;
+            margin-bottom: 7px;
+        }
+
+        .value {
+            font-size: 16px;
+        }
+
+        .note {
+            margin-top: 35px;
+            color: #9fb4d7;
+            font-size: 13px;
+            line-height: 1.6;
         }
 
         .back {
             display: inline-block;
-            margin-top: 45px;
+            margin-top: 40px;
             color: white;
             text-decoration: none;
             border-bottom: 1px solid white;
+            padding-bottom: 3px;
+        }
+
+        @media (max-width: 700px) {
+            h1 {
+                font-size: 38px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -238,33 +309,77 @@ CARPETS_HTML = """
         CONVOY TECHNOLOGY LTD · LONDON
     </div>
 
-    <div class="label">
-        CONVOY PRODUCT IDENTITY
+    <div class="beta">
+        CONVOY PASSPORT · EXPERIMENTAL BETA
     </div>
 
     <h1>Carpet Passport</h1>
 
-    <p>
-        Digital identity and provenance record for handcrafted carpets.
-    </p>
+    <div class="subtitle">
+        Digital product identity and provenance record for a handcrafted carpet.
+    </div>
 
     <div class="passport">
 
-        <div class="label">PRODUCT STATUS</div>
+        <div class="status">PROTOTYPE RECORD</div>
 
-        <h2>Handcrafted Carpet</h2>
+        <div class="id">
+            CP-000001
+        </div>
 
-        <p>
-            Product identity, materials, craftsmanship,
-            ownership and provenance information will be
-            recorded within the Convoy Passport system.
-        </p>
+        <div class="grid">
 
-        <div class="status">PROTOTYPE</div>
+            <div class="field">
+                <div class="label">PRODUCT TYPE</div>
+                <div class="value">Handcrafted Carpet</div>
+            </div>
+
+            <div class="field">
+                <div class="label">PASSPORT STATUS</div>
+                <div class="value">Active · Experimental</div>
+            </div>
+
+            <div class="field">
+                <div class="label">MATERIAL</div>
+                <div class="value">To be recorded</div>
+            </div>
+
+            <div class="field">
+                <div class="label">DIMENSIONS</div>
+                <div class="value">To be recorded</div>
+            </div>
+
+            <div class="field">
+                <div class="label">CRAFTSMANSHIP</div>
+                <div class="value">Handmade</div>
+            </div>
+
+            <div class="field">
+                <div class="label">OWNER</div>
+                <div class="value">Prototype ownership record</div>
+            </div>
+
+            <div class="field">
+                <div class="label">ISSUER</div>
+                <div class="value">Convoy Technology LTD</div>
+            </div>
+
+            <div class="field">
+                <div class="label">LOCATION</div>
+                <div class="value">London, United Kingdom</div>
+            </div>
+
+        </div>
+
+        <div class="note">
+            This is an experimental Convoy Passport record created for
+            development and testing. It is not an official identity,
+            ownership certificate, valuation or government document.
+        </div>
 
     </div>
 
-    <a class="back" href="/">← Back to Convoy</a>
+    <a class="back" href="/">← Back to Convoy Passport</a>
 
 </div>
 
@@ -275,22 +390,28 @@ CARPETS_HTML = """
 
 @app.route("/")
 def home():
-    return render_template_string(HTML)
+    return render_template_string(HOME_HTML)
 
 
 @app.route("/carpets")
 def carpets():
-    return render_template_string(CARPETS_HTML)
+    return render_template_string(CARPET_HTML)
 
 
 @app.route("/technology")
 def technology():
     return """
-    <body style="margin:0;background:#06132d;color:white;
-    font-family:Arial;text-align:center;padding-top:150px;">
+    <body style="
+        margin:0;
+        background:#06132d;
+        color:white;
+        font-family:Arial;
+        text-align:center;
+        padding-top:150px;
+    ">
         <h1>CONVOY TECHNOLOGY</h1>
-        <p>Coming Soon</p>
-        <a href="/" style="color:white;">Back to Convoy</a>
+        <p>Experimental technology infrastructure — Coming Soon</p>
+        <a href="/" style="color:white;">Back to Convoy Passport</a>
     </body>
     """
 
